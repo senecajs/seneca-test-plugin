@@ -1,4 +1,4 @@
-/* Copyright (c) 2018 voxgig and other contributors, MIT License */
+/* Copyright (c) 2018-2022 Richard Rodger and other contributors, MIT License */
 'use strict'
 
 const Util = require('util')
@@ -8,15 +8,14 @@ const Code = require('code')
 const lab = (exports.lab = Lab.script())
 const expect = Code.expect
 
-const PluginValidator = require('seneca-plugin-validator')
+// const PluginValidator = require('seneca-plugin-validator')
 const Seneca = require('seneca')
-const Optioner = require('optioner')
-const Joi = Optioner.Joi
 
 const Plugin = require('..')
 
 
-lab.test('validate', Util.promisify(function(x,fin){PluginValidator(Plugin, module)(fin)}))
+// TODO: replace with seneca-maintain
+// lab.test('validate', Util.promisify(function(x,fin){PluginValidator(Plugin, module)(fin)}))
 
 
 lab.test('happy', async () => {
@@ -39,6 +38,7 @@ lab.test('happy', async () => {
 async function seneca_instance(testmode, opts) {
   return await Seneca({legacy:{transport: false}})
     .test(testmode)
+    .quiet()
     .use('promisify')
     .use(Plugin, opts)
     .ready()

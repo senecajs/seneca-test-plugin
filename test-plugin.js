@@ -17,15 +17,9 @@ function test_plugin(options) {
   var bar = null
 
   this
-    .add('role:test,cmd:foo', cmd_foo)
+    .add('role:test,cmd:foo', {size:Number}, cmd_foo)
     .init(init)
 
-  var Joi = this.util.Joi
-
-  
-  cmd_foo.validate = {
-    size: Joi.number()
-  }
   
   function cmd_foo(msg, reply) {
     if(!msg.bad) {
