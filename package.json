@@ -1,6 +1,6 @@
 {
   "name": "@seneca/test-plugin",
-  "version": "0.0.1",
+  "version": "0.1.0",
   "description": "Test Seneca plugin.",
   "main": "test-plugin.js",
   "scripts": {
@@ -11,7 +11,7 @@
     "clean": "rm -rf node_modules package-lock.json yarn.lock",
     "reset": "npm run clean && npm i && npm test",
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"`; echo TAG: v$REPO_VERSION; git commit -a -m v$REPO_VERSION; git push; git tag v$REPO_VERSION; git push --tags;",
-    "repo-publish": "npm run repo-tag; npm publish --access public"
+    "repo-publish-quick": "npm run repo-tag; npm publish --access public"
   },
   "repository": {
     "type": "git",
