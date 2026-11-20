@@ -1,45 +1,35 @@
-/* Copyright (c) 2018-2022 Richard Rodger and other contributors, MIT License */
+/* Copyright (c) 2018-2026 Richard Rodger and other contributors, MIT License */
 'use strict'
 
-const Util = require('util')
+const { test } = require('node:test')
+const assert = require('node:assert/strict')
 
-const Lab = require('lab')
-const Code = require('code')
-const lab = (exports.lab = Lab.script())
-const expect = Code.expect
-
-// const PluginValidator = require('seneca-plugin-validator')
 const Seneca = require('seneca')
 
 const Plugin = require('..')
 
+test('happy', async () => {
+  const si = await seneca_instance(null, { bar: 300 })
 
-// TODO: replace with seneca-maintain
-// lab.test('validate', Util.promisify(function(x,fin){PluginValidator(Plugin, module)(fin)}))
+  assert.deepEqual(await si.post('role:test,cmd:foo,size:2'), {
+    foo: 4,
+    bar: 300,
+    zed: 200,
+  })
+  assert.equal(si.export('test_plugin/qaz').get_zed(), 200)
 
+  await assert.rejects(si.post('role:test,cmd:foo,size:2,bad:true'), (e) => {
+    assert.equal(e.code, 'bad_foo')
+    assert.deepEqual(e.details, { foo: 2 })
+    assert.equal(e.message, 'seneca: Bad foo: 2.')
+    return true
+  })
 
-lab.test('happy', async () => {
-  var si = await seneca_instance(null,{bar:300})
-  expect(await si.post('role:test,cmd:foo,size:2')).equal({foo:4,bar:300,zed:200})
-  expect(si.export('test_plugin/qaz').get_zed()).equal(200)
-
-  try {
-    await si.post('role:test,cmd:foo,size:2,bad:true')
-    expect(false).true()
-  }
-  catch(e) {
-    expect(e.code).equal('bad_foo')
-    expect(e.message).equal('seneca: Bad foo: 2.')
-  }
+  await si.close()
 })
 
-
-
 async function seneca_instance(testmode, opts) {
-  return await Seneca({legacy:{transport: false}})
-    .test(testmode)
-    .quiet()
-    .use('promisify')
-    .use(Plugin, opts)
-    .ready()
+  const si = Seneca().test(testmode).quiet().use(Plugin, opts)
+  await si.ready()
+  return si
 }
