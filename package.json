@@ -1,13 +1,12 @@
 {
   "name": "@seneca/test-plugin",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Test Seneca plugin.",
   "main": "test-plugin.js",
   "scripts": {
     "watch": "webpack --watch",
-    "test": "lab -P test -t 80 -I URL,URLSearchParams",
+    "test": "node --test \"test/*.test.js\"",
     "prettier": "prettier --write --no-semi --single-quote *.js lib/*.js test/*.js",
-    "coveralls": "lab -s -P test -r lcov | coveralls",
     "clean": "rm -rf node_modules package-lock.json yarn.lock",
     "reset": "npm run clean && npm i && npm test",
     "repo-tag": "REPO_VERSION=`node -e \"console.log(require('./package').version)\"`; echo TAG: v$REPO_VERSION; git commit -a -m v$REPO_VERSION; git push; git tag v$REPO_VERSION; git push --tags;",
@@ -26,18 +25,20 @@
   "files": [
     "LICENSE",
     "README.md",
+    "CHANGES.md",
     "test-plugin.js"
   ],
   "engines": {
-    "node": ">=10"
+    "node": ">=24"
   },
-  "dependencies": {},
+  "peerDependencies": {
+    "seneca": "^4.0.0"
+  },
   "devDependencies": {
-    "code": "5",
-    "coveralls": "3",
-    "lab": "18",
     "prettier": "2",
-    "seneca-promisify": "2",
-    "seneca": "senecajs/seneca"
+    "seneca": "^4.0.0"
+  },
+  "publishConfig": {
+    "access": "public"
   }
 }

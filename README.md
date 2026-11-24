@@ -14,8 +14,11 @@
 ## Install
 
 ```sh
-$ npm install @seneca/test-plugin
+$ npm install seneca@^4 @seneca/test-plugin
 ```
+
+Version 0.2 needs Seneca 4 (peer dependency `seneca` `^4.0.0`) and
+Node.js 24 or later. For Seneca 3, use version 0.1.
 
 ## Quick Example
 
